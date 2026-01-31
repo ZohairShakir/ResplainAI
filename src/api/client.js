@@ -1,4 +1,34 @@
-const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3000/api';
+// Use Vite's import.meta.env for environment variables
+// In production, automatically uses Render backend URL
+// In development, uses localhost or VITE_API_URL if set
+const getApiBaseUrl = () => {
+  // Check if VITE_API_URL is explicitly set (highest priority)
+  if (import.meta.env.VITE_API_URL) {
+    console.log('Using VITE_API_URL:', import.meta.env.VITE_API_URL);
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // Check if we're on Netlify (production)
+  const isProduction = import.meta.env.PROD || 
+                       window.location.hostname.includes('netlify.app') ||
+                       window.location.hostname.includes('resplainai.netlify.app');
+  
+  if (isProduction) {
+    const prodUrl = 'https://resplain-backend.onrender.com/api';
+    console.log('Using production API URL:', prodUrl);
+    return prodUrl;
+  }
+  
+  // In development, use localhost
+  const devUrl = 'http://localhost:3000/api';
+  console.log('Using development API URL:', devUrl);
+  return devUrl;
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Log the API base URL for debugging
+console.log('API Base URL:', API_BASE_URL);
 
 // Helper function to get auth token from localStorage
 const getToken = () => {

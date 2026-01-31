@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: resplain-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://zoher:Truetrue88@resplain.ggbixsk.mongodb.net/?appName=Resplain
+      - key: GEMINI_API_KEY
+        value: AIzaSyCivST_1-qH-D9O_de7M_YvAM-upUbyayM
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
