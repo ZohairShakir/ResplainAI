@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resplain AI — Research papers, explained like you're 12.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefefe;
+            color: #111;
+            scroll-behavior: smooth;
+        }
+        .gradient-panel {
+            background: linear-gradient(135deg, #FFD0B9 0%, #FF8A65 50%, #FF7A59 100%);
+        }
+        .grid-bg {
+            background-size: 80px 80px;
+            background-image: 
+                linear-gradient(to right, rgba(255,122,89,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,122,89,0.03) 1px, transparent 1px);
+        }
+        .soft-shadow {
+            box-shadow: 0 40px 100px -20px rgba(255,122,89,0.08);
+        }
+        ::selection {
+            background-color: rgba(255, 122, 89, 0.2);
+            color: #FF7A59;
+        }
+        /* Custom scrollbar for age level selectors */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
+    "framer-motion": "https://esm.sh/framer-motion@11.11.17?external=react,react-dom",
+    "@google/genai": "https://esm.sh/@google/genai@1.3.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
+  }
+}
+</script>
+</head>
+<body class="overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
