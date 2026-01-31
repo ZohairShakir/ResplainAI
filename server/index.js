@@ -1,5 +1,3 @@
-dotenv.config();
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -8,33 +6,36 @@ import authRoutes from './routes/auth.js';
 import paperRoutes from './routes/papers.js';
 import galleryRoutes from './routes/gallery.js';
 import libraryRoutes from './routes/library.js';
-import 'dotenv/config';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'url';  // ← MISSING IMPORT ADDED
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log("-----------------------------------------");
-console.log("Current Working Directory:", process.cwd());
-console.log("File __dirname:", __dirname);
-console.log("Looking for .env at:", path.resolve(process.cwd(), '.env'));
-console.log("GEMINI_API_KEY exists in memory:", !!process.env.GEMINI_API_KEY);
-console.log("-----------------------------------------");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// ✅ PRODUCTION CORS (Replace with your frontend URLs after deployment)
+app.use(cors({
+  origin: [
+    'http://localhost:3000',           // Local development
+    'https://resplainai.netlify.app', // Replace with your actual frontend URL      // Add more domains as needed
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ Serve uploads folder for PDF/images
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch((err) => console.error('❌ MongoDB connection error:', err));    
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));  
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -53,6 +54,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!', message: err.message });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    mongoose.connection.close(false, () => {
+      console.log('MongoDB connection closed');
+      process.exit(0);
+    });
+  });
 });
